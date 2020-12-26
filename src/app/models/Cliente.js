@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const ClienteSchema = new Schema({
-	nome: {
+	name: {
 		type: String,
 		required: true,
 	},
@@ -15,41 +15,41 @@ const ClienteSchema = new Schema({
 		type: Number,
 		required: false,
 	},
-	telefone: {
+	phone: {
 		type: Number,
 		required: false,
 	},
-	endereco: {
-		pais: {
+	address: {
+		country: {
 			type: String,
 			required: true,
 			default: 'Brasil',
 		},
-		cep: {
+		zip_code: {
+			type: Number,
+			required: true,
+		},
+		state: {
+			type: String,
+			required: false,
+		},
+		city: {
+			type: String,
+			required: false,
+		},
+		neighborhood: {
+			type: String,
+			required: false,
+		},
+		street: {
+			type: String,
+			required: false,
+		},
+		number: {
 			type: Number,
 			required: false,
 		},
-		estado: {
-			type: String,
-			required: false,
-		},
-		cidade: {
-			type: String,
-			required: false,
-		},
-		bairro: {
-			type: String,
-			required: false,
-		},
-		logradouro: {
-			type: String,
-			required: false,
-		},
-		numero: {
-			type: Number,
-			required: false,
-		},
-		complemento: {
+		complement: {
 			type: String,
 			required: false,
 		},

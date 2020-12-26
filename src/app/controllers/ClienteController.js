@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const Yup = require('yup');
 const Cliente = require('../models/Cliente');
 
@@ -8,19 +7,19 @@ class ClienteController {
 			const response = await Cliente.find({ ...req.query });
 
 			return res.json(response);
-		} catch (error) {
-			return res.status(400).json({ error: 'Erro ao listar usuários. ' });
+		} catch (err) {
+			return res.status(400).json({ error: err.message });
 		}
 	}
 
 	async show(req, res) {
-		const { cliente_id } = req.params;
+		const { client_id } = req.params;
 
 		const schema = Yup.object().shape({
-			user_id: Yup.string(),
+			client_id: Yup.string(),
 		});
 
-		if (!(await schema.isValid({ cliente_id })))
+		if (!(await schema.isValid({ client_id })))
 			return res.status(400).json({
 				error:
 					'Falha na validação. O corpo da requisição não está correto.',
@@ -28,35 +27,34 @@ class ClienteController {
 
 		try {
 			const response = await Cliente.findOne({
-				_id: user_id,
+				_id: client_id,
 				...req.query,
 			});
 
 			return res.json(response);
-		} catch (error) {
+		} catch (err) {
 			return res
 				.status(400)
-				.json({ error: 'Erro ao exibir informações de usuário. ' });
+				.json({ error: err.message });
 		}
 	}
 
 	async store(req, res) {
 		const schema = Yup.object().shape({
-			nome: Yup.string().required(),
+			name: Yup.string().required(),
 			email: Yup.string().email().required(),
-			telefone: Yup.number(),
+			phone: Yup.number(),
 			cpf_cnpj: Yup.number(),
-			endereco: Yup.object().shape({
-				pais: Yup.string(),
-				cep: Yup.number().required(),
-				estado: Yup.string().required(),
-				cidade: Yup.string().required(),
-				bairro: Yup.string().required(),
-				logradouro: Yup.string().required(),
-				numero: Yup.number().required(),
-				complemento: Yup.string(),
+			address:  Yup.object().shape({
+				country: Yup.string(),
+				zip_code: Yup.number().required(),
+				state: Yup.string(),
+				city: Yup.string(),
+				neighborhood: Yup.string(),
+				street: Yup.string(),
+				number: Yup.number(),
+				complement: Yup.string(),
 			}),
-			status: Yup.boolean(),
 		});
 
 		if (!(await schema.isValid(req.body)))
@@ -83,23 +81,22 @@ class ClienteController {
 	}
 
 	async update(req, res) {
-		const { user_id } = req.params;
+		const { client_id } = req.params;
 
 		const schema = Yup.object().shape({
-			nome: Yup.string(),
+			name: Yup.string(),
 			email: Yup.string().email(),
-			telefone: Yup.number(),
+			phone: Yup.number(),
 			cpf_cnpj: Yup.number(),
-			endereco: Yup.object().shape({
-				pais: Yup.string(),
-				cep: Yup.number(),
-				estado: Yup.string(),
-				cidade: Yup.string(),
-				bairro: Yup.string(),
-				logradouro: Yup.string(),
-				numero: Yup.number(),
-				complemento: Yup.string(),
-				comprovante: Yup.string(),
+			address:  Yup.object().shape({
+				country: Yup.string(),
+				zip_code: Yup.number(),
+				state: Yup.string(),
+				city: Yup.string(),
+				neighborhood: Yup.string(),
+				street: Yup.string(),
+				number: Yup.number(),
+				complement: Yup.string(),
 			}),
 			status: Yup.boolean(),
 			client_id: Yup.string()
@@ -126,7 +123,7 @@ class ClienteController {
 		try {
 			const clienteExiste = await Cliente.findOne({ email: req.body.email });
 
-			if (clienteExiste)
+			if (clienteExiste && String(clienteExiste._id) !== client_id)
 				return res.status(400).json({ error: 'Esse E-mail já foi vinculado à outro cliente.' });
 
 				const response = await Cliente.findOneAndUpdate(
@@ -148,9 +145,13 @@ class ClienteController {
 		if (!response)
 			return res.status(400).json({ error: 'Cliente não existe. ' });
 
-		await Cliente.findByIdAndDelete(client_id);
+		try {
+			await Cliente.findByIdAndDelete(client_id);
 
-		return res.json({ message: 'Cliente excluído com sucesso.' });
+			return res.json({ message: 'Cliente Excluído com Sucesso.' });
+		} catch(err){
+			return res.json({ error: err.message })
+		}
 	}
 }
 
