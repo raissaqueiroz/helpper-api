@@ -40,10 +40,8 @@ Essa documentação contem todas as orientações para usar a API de consulta de
     12. Digite o comando `npm start` e aperte enter (Caso esteja desenvolvendo e deseje ver as alterações refletidas em tempo real utilize `npm run dev` ao invés do `npm start`)
     13. Pronto! a API estará rodando na porta 3333. Caso você deseje alterar para outra porta, basta adicionar ao aquivo .env do projeto como no exemplo a seguir: `PORT=3333`.
 
-- **URL DA API**
+- **URL DA API: http://localhost:3333**
 
-    **URL API EM PRODUÇÃO: *https://dev.fluenciacorporal.com***
+---
 
-	**URL API LOCAL: *http://localhost:3333***
-
-## Documentação em Desenvolvimento
+## Endpoints
