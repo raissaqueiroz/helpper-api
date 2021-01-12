@@ -1,4 +1,4 @@
-# Blog API
+# Helpper API
 
 Essa documentação contem todas as orientações para usar a API de consulta de clientes desenvolvida para o processo seletivo na Helpper.
 
